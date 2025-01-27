@@ -1,6 +1,6 @@
 'use strict';
 
-//////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 // Accounts:
 const account1 = {
   owner: 'Jonas Schmedtmann',
@@ -39,9 +39,7 @@ const account5 = {
 
 const account6 = {
   owner: 'Sin Levy',
-  movements: [
-    870000, -8706.9, -960, -1250, -5469.3, -653.6, -863.5, -2560.11, 8000,
-  ],
+  movements: [870000, -8706.9, -960, -1250, -5469.3, -653.6, -863.5, -2560.11, 8000],
   interestRate: 1,
   pin: '0245',
 };
@@ -63,7 +61,7 @@ const accounts = [
   account7,
 ];
 
-//////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 // Elements:
 const labelWelcome = document.querySelector('.welcome');
 const labelDate = document.querySelector('.date');
@@ -90,11 +88,7 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-//////////////////////////////////////////////////////////////////
-// From Here Kislev Levy Code Start:
-// (if you read this send me this emoji === '🕵️' )
-//////////////////////////////////////////////////////////////////
-
+////////////////////////////////////////////////////////////////
 // Display Movements:
 const displayMovements = function (account, sort = false) {
   containerMovements.innerHTML = '';
@@ -109,9 +103,7 @@ const displayMovements = function (account, sort = false) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
     <div class="movements__row">
-      <div class="movements__type movements__type--${type}">${
-      i + 1
-    } ${type}</div>
+      <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
       <div class="movements__value">${mov}₪</div>
     </div>
     `;
@@ -129,21 +121,21 @@ const calcDisplayBlance = function (account) {
 const calcDisplaySummery = function (account) {
   // Income Summery:
   const income = account.movements
-    .filter(mov => mov > 0)
+    .filter((mov) => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumIn.textContent = `${income}₪`;
 
   // Diposit Summery:
   const outcome = account.movements
-    .filter(mov => mov < 0)
+    .filter((mov) => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumOut.textContent = `${Math.abs(outcome)}₪`;
 
   // Intrest Summery:
   const interest = account.movements
-    .filter(mov => mov > 0)
-    .map(mov => (mov * account.interestRate) / 100)
-    .filter(mov => mov >= 1)
+    .filter((mov) => mov > 0)
+    .map((mov) => (mov * account.interestRate) / 100)
+    .filter((mov) => mov >= 1)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumInterest.textContent = `${interest}₪`;
 };
@@ -163,11 +155,11 @@ const EURtoNIS = 3.92;
 // Create Username:
 const createUsername = function (accounts) {
   accounts.forEach(
-    account =>
+    (account) =>
       (account.username = account.owner
         .toLowerCase()
         .split(' ')
-        .map(name => name[0])
+        .map((name) => name[0])
         .join(''))
   );
 };
@@ -180,24 +172,20 @@ const updateUI = function (account) {
   calcDisplaySummery(account);
 };
 
-//////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 // Event Handlers:
 
 // Login Button Logic:
 let currentAccount;
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
-  currentAccount = accounts.find(
-    acc => acc.username === inputLoginUsername.value
-  );
+  currentAccount = accounts.find((acc) => acc.username === inputLoginUsername.value);
   if (currentAccount?.pin == inputLoginPin.value) {
     // Console Log Conformation:
     console.log('Loged In!');
 
     // Welcome Message:
-    labelWelcome.textContent = `Welcome back ${
-      currentAccount.owner.split(' ')[0]
-    }`;
+    labelWelcome.textContent = `Welcome back ${currentAccount.owner.split(' ')[0]}`;
 
     //UI Opacity Change:
     containerApp.style.opacity = 100;
@@ -217,7 +205,7 @@ btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
   const transferAmount = Number(inputTransferAmount.value);
   const reciverAccount = accounts.find(
-    account => account.username === inputTransferTo.value
+    (account) => account.username === inputTransferTo.value
   );
 
   // Logic:
@@ -247,7 +235,7 @@ btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
   const amount = Number(inputLoanAmount.value);
 
-  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+  if (amount > 0 && currentAccount.movements.some((mov) => mov >= amount * 0.1)) {
     currentAccount.movements.push(amount);
     updateUI(currentAccount);
   }
@@ -266,7 +254,7 @@ btnClose.addEventListener('click', function (e) {
   ) {
     // Delete Account
     const index = accounts.findIndex(
-      acc => acc.username == currentAccount.username
+      (acc) => acc.username == currentAccount.username
     );
     accounts.splice(index, 1);
 
@@ -288,122 +276,3 @@ btnSort.addEventListener('click', function (e) {
   displayMovements(currentAccount, sortState);
   sortState = !sortState;
 });
-
-//////////////////////////////////////////////////////////////////
-// Challenge No' 4:
-//////////////////////////////////////////////////////////////////
-
-// Data:
-const dogs = [
-  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
-  { weight: 8, curFood: 200, owners: ['Matilda'] },
-  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
-  { weight: 32, curFood: 340, owners: ['Michael'] },
-];
-
-// 1.
-console.log('1.');
-dogs.forEach(dog => (dog.recommendedFood = dog.weight ** 0.75 * 28));
-console.log('____________________________________');
-
-// 2.
-console.log('2.');
-const isRecommendedPortion = function (dog) {
-  if (
-    dog.curFood >= dog.recommendedFood * 0.9 &&
-    dog.curFood <= dog.recommendedFood * 1.1
-  )
-    return 'okay';
-  if (dog.curFood < dog.recommendedFood * 0.9) return 'too little';
-  if (dog.curFood > dog.recommendedFood * 1.1) return 'too much';
-};
-
-const sarahResult = isRecommendedPortion(
-  dogs.find(dog => dog.owners.includes('Sarah'))
-);
-console.log(`Sarah's dog is eating ${sarahResult}`);
-console.log('____________________________________');
-
-// 3.
-console.log('3.');
-const ownersEatTooMuch = [];
-const ownersEatTooLittle = [];
-const ownersEatOkay = [];
-
-dogs.forEach(function (dog) {
-  if (isRecommendedPortion(dog) === 'too little')
-    ownersEatTooLittle.push(...dog.owners);
-  if (isRecommendedPortion(dog) === 'too much')
-    ownersEatTooMuch.push(...dog.owners);
-  if (isRecommendedPortion(dog) === 'okay') ownersEatOkay.push(...dog.owners);
-});
-console.log('____________________________________');
-
-// 4.
-console.log('4.');
-console.log(`${ownersEatTooMuch.join(' and ')}'s dogs eat too much!`);
-console.log(`${ownersEatTooLittle.join(' and ')}'s dogs eat too little!`);
-console.log('____________________________________');
-
-// 5.
-console.log('5.');
-console.log(dogs.some(dog => dog.curFood === dog.recommendedFood));
-console.log('____________________________________');
-
-// 6.
-console.log('6.');
-console.log(ownersEatOkay.length > 0);
-console.log('____________________________________');
-
-// 7.
-console.log('7.');
-//did that already hahaha
-console.log('____________________________________');
-
-// 8.
-console.log('8.');
-const dogsCopy = dogs
-  .slice()
-  .sort((dogA, dogB) => dogA.recommendedFood - dogB.recommendedFood);
-console.log(dogsCopy);
-console.log('____________________________________');
-
-const convertToTitleCase = function (title) {
-  const exptiopns = [
-    'and',
-    'as',
-    'but',
-    'for',
-    'if',
-    'nor',
-    'or',
-    'so',
-    'yet',
-    'as',
-    'at',
-    'by',
-    'for',
-    'in',
-    'of',
-    'off',
-    'on',
-    'per',
-    'to',
-    'up',
-    'via',
-    'a',
-    'an',
-    'the',
-  ];
-  return title
-    .toLowerCase()
-    .split(' ')
-    .map(value =>
-      exptiopns.includes(value)
-        ? value
-        : value[0].toUpperCase() + value.slice(1)
-    )
-    .join(' ');
-};
-
-console.log(convertToTitleCase('this iS D A NICE title'));
