@@ -44,4 +44,4 @@ To run the project locally, follow these steps:
    - **Username:** js
    - **PIN:** 1111
 
-> You can also preview the app by visiting the following link: [Bankist App Preview](http://kislev.me/bankist_app)
+> You can also preview the app by visiting the following link: [Bankist App Preview](http://kislev.me/bankist-app)
